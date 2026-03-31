@@ -16,8 +16,12 @@ services:
     container_name: apache-proxy
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./apache/reverse-proxy.conf:/usr/local/apache2/conf/extra/reverse-proxy.conf:ro
+      - ./apache/ssl.conf:/usr/local/apache2/conf/extra/ssl.conf:ro
+      - ./apache/server.crt:/usr/local/apache2/conf/server.crt:ro
+      - ./apache/server.key:/usr/local/apache2/conf/server.key:ro
     command: >
       sh -c "echo 'LoadModule proxy_module modules/mod_proxy.so' >> /usr/local/apache2/conf/httpd.conf &&
             echo 'LoadModule proxy_http_module modules/mod_proxy_http.so' >> /usr/local/apache2/conf/httpd.conf &&

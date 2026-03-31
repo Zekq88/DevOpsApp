@@ -1,0 +1,13 @@
+- name: Setup Docker and run app
+  hosts: local
+  become: false
+
+  tasks:
+    - name: Install Docker (Windows skip, Linux only)
+      debug:
+        msg: "Docker should aldready be installed on Windows"
+
+    - name: Start Docker Compose
+      command: docker compose up -d --build
+      args:
+        chdir: /mnt/d/Programming/Umea/reverse

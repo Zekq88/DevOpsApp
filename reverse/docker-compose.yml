@@ -1,0 +1,40 @@
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      DB_HOST: db
+      DB_NAME: mydb
+      DB_USER: myuser
+      DB_PASSWORD: mypassword
+    depends_on:
+      - db
+
+  proxy:
+    image: httpd:2.4
+    container_name: apache-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./apache/reverse-proxy.conf:/usr/local/apache2/conf/extra/reverse-proxy.conf:ro
+    command: >
+      sh -c "echo 'LoadModule proxy_module modules/mod_proxy.so' >> /usr/local/apache2/conf/httpd.conf &&
+            echo 'LoadModule proxy_http_module modules/mod_proxy_http.so' >> /usr/local/apache2/conf/httpd.conf &&
+            echo 'Include /usr/local/apache2/conf/extra/reverse-proxy.conf' >> /usr/local/apache2/conf/httpd.conf &&
+            httpd-foreground"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -2,7 +2,7 @@
 services:
   backend:
     build: ./backend
-    container_name: backend
+##    container_name: backend
     environment:
       DB_HOST: db
       DB_NAME: mydb
@@ -13,7 +13,7 @@ services:
 
   proxy:
     image: httpd:2.4
-    container_name: apache-proxy
+##    container_name: apache
     ports:
       - "80:80"
       - "443:443"
@@ -32,13 +32,30 @@ services:
 
   db:
     image: postgres:15
-    container_name: db
+##    container_name: db
     environment:
       POSTGRES_DB: mydb
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  
+  jenkins:
+    build: ./jenkins
+##    container_name: jenkins
+    user: root
+    ports:
+      - "8081:8080"
+      - "50000:5000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/workspace
+    environment:
+      - Lang=en_US.UTF-8
+      - LANGUAGE=en_US:en
+      - LC_ALL=en_US.UTF-8
 
 volumes:
   postgres_data:
+  jenkins_home:

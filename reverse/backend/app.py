@@ -12,7 +12,7 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "mypassword")
 
 @app.route("/")
 def hello():
-    return f"HeLLo fRoM Da oTherSide {socket.gethostname()}!\n"
+    return f"HeLLo fRoM Da oTherSide, greger nr. {socket.gethostname()}!\n"
 
 @app.route("/db")
 def db_check():

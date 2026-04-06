@@ -18,3 +18,12 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
+          env:
+            - name: DB_HOST
+              value: db-service
+            - name: DB_NAME
+              value: mydb
+            - name: DB_USER
+              value: myuser
+            - name: DB_PASSWORD
+              value:  mypassword
